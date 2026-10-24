@@ -10,12 +10,15 @@ export const createUser = (userData) =>
     });
 
 // registra marcacion user
-export const registerClock = (userId) =>
+export const registerClock = (userId, customTimestamp = null) =>
     fetchData('/attendance/clock', {
         method: 'POST',
-        body: JSON.stringify(userId),
+        body: JSON.stringify({
+            userId: Number(userId),
+            customTimestamp
+        }),
     });
 
 //obtener maraciones por fecha de un empleado
-export const getTodatAttendance = (userId, dateStr) =>
+export const getTodayAttendance = (userId, dateStr) =>
     fetchData(`/attendance/user/${userId}/date/${dateStr}`);
