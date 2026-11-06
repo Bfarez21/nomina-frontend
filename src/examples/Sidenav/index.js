@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { useEffect } from "react";
 
 // react-router-dom components
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
 
 // prop-types is a library for typechecking of props.
 import PropTypes from "prop-types";
@@ -34,7 +34,7 @@ import SoftButton from "components/SoftButton";
 
 // Soft UI Dashboard React examples
 import SidenavCollapse from "examples/Sidenav/SidenavCollapse";
-import SidenavCard from "examples/Sidenav/SidenavCard";
+//import SidenavCard from "examples/Sidenav/SidenavCard";
 
 // Custom styles for the Sidenav
 import SidenavRoot from "examples/Sidenav/SidenavRoot";
@@ -49,6 +49,21 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const location = useLocation();
   const { pathname } = location;
   const collapseName = pathname.split("/").slice(1)[0];
+
+  //LOGICA DE CERRAR SESIÓN
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    // Limpiar credenciales y roles guardados
+    // localStorage.removeItem("token");
+    // localStorage.removeItem("userRole");
+    // localStorage.removeItem("userId");
+    // localStorage.removeItem("username");
+    //
+    // sessionStorage.clear();
+    //
+    // // Redirigir a la pantalla de Sign In
+    // navigate("/authentication/sign-in", { replace: true });
+  };
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
 
@@ -158,19 +173,16 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       <Divider />
       <List>{renderRoutes}</List>
       <SoftBox pt={2} my={2} mx={2} mt="auto">
-        <SidenavCard />
+        {/* <SidenavCard /> */}
         <SoftBox mt={2}>
-          <SoftButton
-            component="a"
-            href="https://creative-tim.com/product/soft-ui-dashboard-pro-react"
-            target="_blank"
-            rel="noreferrer"
-            variant="gradient"
-            color={color}
-            fullWidth
-          >
-            upgrade to pro
-          </SoftButton>
+          {/*<SoftButton*/}
+          {/*  variant="gradient"*/}
+          {/*  color="error"*/}
+          {/*  fullWidth*/}
+          {/*  onClick={handleLogout}*/}
+          {/*>*/}
+          {/*  Cerrar Sesión*/}
+          {/*</SoftButton>*/}
         </SoftBox>
       </SoftBox>
     </SidenavRoot>

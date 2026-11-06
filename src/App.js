@@ -55,6 +55,29 @@ export default function App() {
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
 
+  // 1. Verificar credenciales y rol de sesión
+  const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+  const userRole = localStorage.getItem("userRole") || sessionStorage.getItem("userRole");
+  const isSignInPage = pathname === "/authentication/sign-in" || !token;
+  // 2. Determinar la ruta por defecto según si existe un token activo
+  const initialRoute = token
+    ? userRole === "ROLE_EMPLOYEE"
+      ? "/marcacion-empleado"
+      : "/dashboard"
+    : "/authentication/sign-in";
+
+  // 3. Filtrar rutas para el menú lateral
+  const filteredRoutes = routes.filter((route) => {
+    // Con sesión iniciada, ocultar Sign In y Sign Up del menú
+    if (route.key === "sign-in" || route.key === "sign-up") {
+      return false;
+    }
+    if (userRole === "ROLE_EMPLOYEE") {
+      return route.key !== "dashboard" && route.key !== "tables";
+    }
+    return true;
+  });
+
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -95,6 +118,7 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
+  //con protected routes
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
@@ -102,7 +126,22 @@ export default function App() {
       }
 
       if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
+        const isPublic = route.route.startsWith("/authentication");
+
+        let element = route.component;
+
+        if (!token && !isPublic) {
+          // Sin sesión: mandar al login
+          element = <Navigate to="/authentication/sign-in" replace />;
+        } else if (
+          userRole === "ROLE_EMPLOYEE" &&
+          (route.route === "/dashboard" || route.route === "/tables")
+        ) {
+          // Empleado: no puede entrar a estas pantallas
+          element = <Navigate to="/marcacion-empleado" replace />;
+        }
+
+        return <Route exact path={route.route} element={element} key={route.key} />;
       }
 
       return null;
@@ -132,17 +171,20 @@ export default function App() {
     </SoftBox>
   );
 
+  // Variable de control: ocultar Sidenav si no hay token o si estamos en /authentication/sign-in
+  const isAuthPage = pathname === "/authentication/sign-in" || !token;
+
   return direction === "rtl" ? (
     <CacheProvider value={rtlCache}>
       <ThemeProvider theme={themeRTL}>
         <CssBaseline />
-        {layout === "dashboard" && (
+        {layout === "dashboard" && !isSignInPage && (
           <>
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName="Soft UI Dashboard"
-              routes={routes}
+              brandName="Soft UI Nomina"
+              routes={filteredRoutes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -153,20 +195,21 @@ export default function App() {
         {layout === "vr" && <Configurator />}
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<Navigate to={initialRoute} replace />} />
+          <Route path="*" element={<Navigate to={initialRoute} replace />} />
         </Routes>
       </ThemeProvider>
     </CacheProvider>
   ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {layout === "dashboard" && !isSignInPage && (
         <>
           <Sidenav
             color={sidenavColor}
             brand={brand}
-            brandName="Soft UI Dashboard"
-            routes={routes}
+            brandName="Soft UI Nomina"
+            routes={filteredRoutes} // ruta filtrada
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
           />
@@ -177,7 +220,8 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to={initialRoute} replace />} />
+        <Route path="*" element={<Navigate to={initialRoute} replace />} />
       </Routes>
     </ThemeProvider>
   );
