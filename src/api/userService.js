@@ -1,3 +1,4 @@
+//api/userService
 import { fetchData } from './client';
 
 export const getAllUsers = () => {

@@ -1,7 +1,5 @@
 import { fetchData} from "./client";
 import { API_URL } from "../config";
-// obtener lista de empleados
-export const getUsers = ()=> fetchData('/api/users');
 
 // registra marcacion user
 export const registerClock = (userId, action) => {

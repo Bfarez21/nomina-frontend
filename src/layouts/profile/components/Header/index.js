@@ -46,6 +46,24 @@ function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
 
+  // Obtener datos dinámicos del almacenamiento local/sesión
+  const username =
+    localStorage.getItem("username") || sessionStorage.getItem("username") || "Usuario";
+  const rawRole =
+    localStorage.getItem("userRole") || sessionStorage.getItem("userRole") || "ROLE_EMPLOYEE";
+
+  // Formatear rol a nombre legible (ej. ROLE_EMPLOYEE -> Empleado)
+  const formatRole = (role) => {
+    switch (role) {
+      case "ROLE_EMPLOYEE":
+        return "Empleado";
+      case "ROLE_ADMIN":
+        return "Administrador";
+      default:
+        return role.replace("ROLE_", "");
+    }
+  };
+
   useEffect(() => {
     // A function that sets the orientation state of the tabs.
     function handleTabsOrientation() {
@@ -113,27 +131,27 @@ function Header() {
           <Grid item>
             <SoftBox height="100%" mt={0.5} lineHeight={1}>
               <SoftTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                {username}
               </SoftTypography>
               <SoftTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+                {formatRole(rawRole)}
               </SoftTypography>
             </SoftBox>
           </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
-            <AppBar position="static">
-              <Tabs
-                orientation={tabsOrientation}
-                value={tabValue}
-                onChange={handleSetTabValue}
-                sx={{ background: "transparent" }}
-              >
-                <Tab label="App" icon={<Cube />} />
-                <Tab label="Message" icon={<Document />} />
-                <Tab label="Settings" icon={<Settings />} />
-              </Tabs>
-            </AppBar>
-          </Grid>
+          {/*<Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>*/}
+          {/*  <AppBar position="static">*/}
+          {/*    <Tabs*/}
+          {/*      orientation={tabsOrientation}*/}
+          {/*      value={tabValue}*/}
+          {/*      onChange={handleSetTabValue}*/}
+          {/*      sx={{ background: "transparent" }}*/}
+          {/*    >*/}
+          {/*      <Tab label="App" icon={<Cube />} />*/}
+          {/*      <Tab label="Message" icon={<Document />} />*/}
+          {/*      <Tab label="Settings" icon={<Settings />} />*/}
+          {/*    </Tabs>*/}
+          {/*  </AppBar>*/}
+          {/*</Grid>*/}
         </Grid>
       </Card>
     </SoftBox>

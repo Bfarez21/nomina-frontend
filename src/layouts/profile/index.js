@@ -82,6 +82,12 @@ function Overview() {
     }
   };
 
+  const formatRole = (role) => {
+    if (role === "ROLE_EMPLOYEE") return "Empleado";
+    if (role === "ROLE_ADMIN") return "Administrador";
+    return role ? role.replace("ROLE_", "") : "Empleado";
+  };
+
   useEffect(() => {
     fetchAttendance(selectedPeriod);
   }, [userId]);
@@ -112,24 +118,24 @@ function Overview() {
       <Header />
 
       {/* Información del Perfil */}
-      <SoftBox mt={5} mb={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={8} xl={6}>
-            <ProfileInfoCard
-              title="Información del Perfil"
-              description="Resumen de datos del empleado y rol asignado para la marcación de asistencia."
-              info={{
-                fullName: username,
-                role: userRole,
-                userId: userId || "N/A",
-                estado: "Activo",
-              }}
-              social={[]}
-              action={{ route: "", tooltip: "Editar Perfil" }}
-            />
-          </Grid>
-        </Grid>
-      </SoftBox>
+      {/*<SoftBox mt={5} mb={3}>*/}
+      {/*  <Grid container spacing={3}>*/}
+      {/*    <Grid item xs={12} md={8} xl={6}>*/}
+      {/*      <ProfileInfoCard*/}
+      {/*        title="Información del Perfil"*/}
+      {/*        description="Resumen de datos del empleado y rol asignado para la marcación de asistencia."*/}
+      {/*        info={{*/}
+      {/*          fullName: username,*/}
+      {/*          role: formatRole(userRole),*/}
+      {/*          // userId: userId || "N/A",*/}
+      {/*          estado: "Activo",*/}
+      {/*        }}*/}
+      {/*        social={[]}*/}
+      {/*        action={{ route: "", tooltip: "Editar Perfil" }}*/}
+      {/*      />*/}
+      {/*    </Grid>*/}
+      {/*  </Grid>*/}
+      {/*</SoftBox>*/}
 
       {/* Historial con Tabla y Paginación Custom */}
       <SoftBox mb={3}>

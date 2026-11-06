@@ -124,6 +124,14 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Empleados",
+    key: "empleados",
+    route: "/empleados",
+    icon: <Icon size="12px">fingerprint</Icon>,
+    component: <EmpleadoMarcacion />,
+  },
+  {
+    type: "collapse",
     name: "Sign In",
     key: "sign-in",
     route: "/authentication/sign-in",
