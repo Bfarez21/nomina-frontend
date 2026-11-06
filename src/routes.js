@@ -45,6 +45,7 @@ import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import EmpleadoMarcacion from "./layouts/attendance/assistance";
+import Empleados from "./layouts/empleados";
 
 // Soft UI Dashboard React icons
 import Shop from "examples/Icons/Shop";
@@ -68,15 +69,15 @@ const routes = [
     component: <Dashboard />,
     noCollapse: true,
   },
-  {
-    type: "collapse",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: <Office size="12px" />,
-    component: <Tables />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Tables",
+  //   key: "tables",
+  //   route: "/tables",
+  //   icon: <Office size="12px" />,
+  //   component: <Tables />,
+  //   noCollapse: true,
+  // },
   // {
   //   type: "collapse",
   //   name: "Billing",
@@ -127,8 +128,8 @@ const routes = [
     name: "Empleados",
     key: "empleados",
     route: "/empleados",
-    icon: <Icon size="12px">fingerprint</Icon>,
-    component: <EmpleadoMarcacion />,
+    icon: <Icon size="12px">people</Icon>,
+    component: <Empleados />,
   },
   {
     type: "collapse",

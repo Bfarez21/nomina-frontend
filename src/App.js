@@ -72,8 +72,13 @@ export default function App() {
     if (route.key === "sign-in" || route.key === "sign-up") {
       return false;
     }
+    // oculta vistas a role employee
     if (userRole === "ROLE_EMPLOYEE") {
-      return route.key !== "dashboard" && route.key !== "tables";
+      return (
+        route.key !== "dashboard" &&
+        route.key !== "tables" &&
+        route.key !== "empleados"
+      );
     }
     return true;
   });
@@ -135,9 +140,11 @@ export default function App() {
           element = <Navigate to="/authentication/sign-in" replace />;
         } else if (
           userRole === "ROLE_EMPLOYEE" &&
-          (route.route === "/dashboard" || route.route === "/tables")
+          (route.route === "/dashboard" ||
+            route.route === "/tables" ||
+            route.route === "/empleados")
         ) {
-          // Empleado: no puede entrar a estas pantallas
+          // Empleado intentando acceder a pantallas de admin: redirigir a marcación
           element = <Navigate to="/marcacion-empleado" replace />;
         }
 
